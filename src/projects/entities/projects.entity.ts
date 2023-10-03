@@ -1,12 +1,17 @@
-import { BaseEntity } from 'src/config/base.entity';
-import { IProjects } from 'src/interface/projects.interface';
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
+import { IProjects } from '../../interface/projects.interface';
+import { BaseEntity } from '../../config/base.entity';
+import { UsersProjectsEntity } from '../../users/entities/usersProjects.entity';
 
 @Entity({ name: 'projects' })
-export class ProjectEntity extends BaseEntity implements IProjects {
+export class ProjectsEntity extends BaseEntity implements IProjects {
   @Column()
   name: string;
+
   @Column()
   description: string;
+
+  @OneToMany(() => UsersProjectsEntity, (usersProjects) => usersProjects.project)
+  usersIncludes: UsersProjectsEntity[]
  
 }
