@@ -19,8 +19,10 @@ async function server() {
     }
   }))
 
-  await app.listen(configService.get("PORT"));
-  
-  console.log(`⚡📱Aplication running  on  port ${await (configService.get("PORT"))} ...`)
+  const port = configService.get<number>('PORT');
+
+  await app.listen(port);
+  console.log(`⚡📱 Application running on port ${port} ...`);
 }
+
 server();
