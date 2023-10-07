@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { UsersEntity } from '../entities/users.entity';
+import * as bcrypt from 'bcrypt';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserDTO, UserToProjectDTO, UserUpdateDTO } from '../dto/user.dto';
@@ -15,14 +16,15 @@ export class UsersService {
     private readonly userProjectRepository: Repository<UsersProjectsEntity>,    
    ){}
 
-  public async createUser(body: UserDTO): Promise<UsersEntity>{
+  public async createUser(body: UserDTO): Promise<UsersEntity> {
     try {
-      return await this.userRepository.save(body)
+      body.password = await bcrypt.hash(body.password, +process.env.HASH_SALT)
+      return await this.userRepository.save(body);
     } catch (error) {
-      throw ErrorManager.createSignatureError(error.message)    
-    
+      throw ErrorManager.createSignatureError(error.message);
     }
-  }  
+  }
+  
 
   public async findUsers(): Promise<UsersEntity[]>{
     try {
