@@ -22,7 +22,7 @@ export class ProjectsService {
 
   public async createProject(body: ProjectDTO, userId: string): Promise<any> {
     try {
-      const user = await this.usersService.findUserById(userId)
+      const user = await this.usersService.findUsersById(userId)
       const project = await this.projectRepository.save(body);
       return await this.userProjectRepository.save({
         accessLevel: ACCESS_LEVEL.OWNER,
